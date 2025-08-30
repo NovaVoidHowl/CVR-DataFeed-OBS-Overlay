@@ -94,8 +94,8 @@ that combines WebSocket connections for live data and REST API calls for static 
 ### Features
 
 - **Real-time Network Status** (upper left): Game ping, voice ping, FPS, connection state via WebSocket
-- **World Information** (bottom left): Current world name, author, thumbnail, instance ID via REST API
-- **Avatar Information** (bottom right): Current avatar name, author, thumbnail, tags via REST API
+- **World Information** (bottom left): Current world name, author, instance ID via REST API
+- **Avatar Information** (bottom right): Current avatar name, author, tags via REST API
 - **Hybrid Data Approach**: WebSocket for live data (ping, FPS), REST API for static data (world/avatar)
 - **Auto-reconnection**: Automatically reconnects WebSocket if connection is lost
 - **Connection Status**: Visual indicators for API connectivity and network status
