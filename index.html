@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CVR Data Feed Overlay</title>
+    <link rel="stylesheet" href="overlay.css" />
+  </head>
+  <body>
+    <!-- Real-time data - Upper Left -->
+    <div class="realtime-panel">
+      <div class="panel-header">Network Status</div>
+      <div class="data-row">
+        <span class="label">Game Ping:</span>
+        <span class="value" id="game-ping">--</span>
+        <span class="unit">ms</span>
+        <span class="status-indicator" id="game-status">●</span>
+      </div>
+      <div class="data-row">
+        <span class="label">Voice Ping:</span>
+        <span class="value" id="voice-ping">--</span>
+        <span class="unit">ms</span>
+        <span class="status-indicator" id="voice-status">●</span>
+      </div>
+      <div class="data-row">
+        <span class="label">FPS:</span>
+        <span class="value" id="fps">--</span>
+        <span class="unit">fps</span>
+      </div>
+      <div class="data-row">
+        <span class="label">Connection:</span>
+        <span class="value" id="connection-state">--</span>
+      </div>
+    </div>
+
+    <!-- World Info - Bottom Left -->
+    <div class="world-panel">
+      <div class="panel-header">World</div>
+      <div class="world-content">
+        <div class="world-details">
+          <div class="world-name" id="world-name">Not Connected</div>
+          <div class="world-author" id="world-author">--</div>
+          <div class="world-info">
+            <span class="instance-id" id="instance-id">--</span>
+            <span class="world-tags" id="world-tags">--</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avatar Info - Bottom Right -->
+    <div class="avatar-panel">
+      <div class="panel-header">Avatar</div>
+      <div class="avatar-content">
+        <div class="avatar-details">
+          <div class="avatar-name" id="avatar-name">Not Loaded</div>
+          <div class="avatar-author" id="avatar-author">--</div>
+          <div class="avatar-info">
+            <span class="avatar-tags" id="avatar-tags">--</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status indicator for API connection -->
+    <div class="api-status" id="api-status">
+      <div class="status-dot" id="status-dot">●</div>
+      <span id="status-text">Connecting...</span>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="overlay.js"></script>
+  </body>
+</html>
