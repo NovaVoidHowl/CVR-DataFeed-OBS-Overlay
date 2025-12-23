@@ -4,7 +4,7 @@
 const OVERLAY_CONFIG = {
   // API Configuration
   apiBaseUrl: "http://localhost:8080",
-  websocketUrl: "ws://localhost:8081",
+  websocketUrl: "ws://localhost:8081/api/v1/realtime",
   apiKey: "your-api-key-here", // Replace with your actual API key
 
   // Update Settings

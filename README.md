@@ -155,6 +155,16 @@ that combines WebSocket connections for live data and REST API calls for static 
 
 ### OBS Studio Setup
 
+> [!NOTE]
+>
+> **As of DataFeed v0.9.2 (2025r181 update):** The overlay can now work when opened directly as a file
+> (`file:///C:/path/to/index.html`) thanks to improved CORS handling and multi-host binding in the DataFeed mod.
+>
+> **However, we still recommend serving via HTTP** for maximum compatibility across browsers and protection against
+> future browser security updates that may block `file://` access.
+
+#### Option 1: Direct File Access (Works with DataFeed v0.9.2+)
+
 1. **Add Browser Source**: In OBS Studio, add a new **Browser Source**
 2. **Set URL** to the full path of `index.html`:
 
@@ -171,6 +181,59 @@ that combines WebSocket connections for live data and REST API calls for static 
 4. **Enable options**:
    - ☑️ "Shutdown source when not visible"
    - ☑️ "Refresh browser when scene becomes active"
+
+#### Option 2: HTTP Server (Recommended for Maximum Compatibility)
+
+**Why use HTTP serving?**
+
+- **Browser Compatibility**: Works reliably across all browsers and versions
+- **Future-Proof**: Protects against browser security updates that may tighten `file://` restrictions
+- **Consistent Behavior**: Eliminates potential CORS issues
+
+**Setup Methods:**
+
+1. **PowerShell Server Script** (Easiest - included in overlay):
+
+   ```powershell
+   cd path/to/obs-overlay
+   .\serve_overlay.ps1
+   ```
+
+   Then in OBS Browser Source, use URL: `http://localhost:8000/index.html`
+
+2. **Python HTTP Server**:
+
+   ```powershell
+   cd path/to/obs-overlay
+   python -m http.server 8000
+   ```
+
+   Then use URL: `http://localhost:8000/index.html`
+
+3. **Node.js http-server**:
+
+   ```powershell
+   npx http-server -p 8000
+   ```
+
+   Then use URL: `http://localhost:8000/index.html`
+
+4. **VS Code Live Server Extension**:
+   - Install "Live Server" extension in VS Code
+   - Right-click `index.html` → "Open with Live Server"
+   - Use the provided localhost URL in OBS
+
+> [!TIP]
+>
+> Keep the HTTP server running while streaming. The overlay will automatically reconnect if the server restarts.
+
+#### Browser Source Configuration (Same for Both Options)
+
+- **Width**: 1920
+- **Height**: 1080
+- **FPS**: 30 (enable "Use custom frame rate")
+- ☑️ "Shutdown source when not visible"
+- ☑️ "Refresh browser when scene becomes active"
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -244,6 +307,42 @@ Create multiple copies with different configurations for:
 <!-- TROUBLESHOOTING -->
 
 ## Troubleshooting
+
+### CORS / Connection Issues
+
+**Problem:** Browser console shows CORS policy errors blocking API requests.
+
+**Solution (as of DataFeed v0.9.2):**
+
+The DataFeed mod now supports multi-host binding and improved CORS handling. If you're experiencing CORS issues:
+
+1. **Verify DataFeed mod version**: Ensure you have DataFeed v0.9.2 or later (2025r181 update)
+2. **Check server bindings**: The mod now listens on `localhost`, `127.0.0.1`, and `[::1]`
+3. **Use matching URLs**: If your overlay uses `localhost:8000`, the API calls should use `localhost:8080`
+
+**Why CORS Issues Occur:**
+
+Modern browsers treat `file://` URLs as "null" origin and have strict CORS policies. While the current DataFeed version
+handles this correctly, browser security policies evolve over time. What works today may be blocked by future browser
+updates.
+
+**Technical Details:**
+
+The DataFeed API sets proper CORS headers:
+
+- `Access-Control-Allow-Origin: *`
+- `Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS`
+- `Access-Control-Allow-Headers: Content-Type, X-API-Key, Authorization`
+- `Access-Control-Max-Age: 86400`
+
+The mod handles OPTIONS preflight requests correctly and binds to multiple addresses for maximum compatibility.
+
+**If problems persist:**
+
+- Use HTTP serving method instead of file:// (see OBS Studio Setup section)
+- Check browser console (F12) for specific error messages
+- Verify the DataFeed mod is running and API is enabled
+- Try using `127.0.0.1` instead of `localhost` in URLs (or vice versa)
 
 ### Overlay shows "Connection Error"
 
